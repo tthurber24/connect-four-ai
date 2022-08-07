@@ -24,11 +24,67 @@ class Board:
             return True
 
         matches = 0
-        for i in range(0, (yCor + 1)):
+        for i in range(0, (yCor + 1)): # vertical matches below
             if self.content[i][xCor] == piece:
                 matches += 1
         if matches == 4:
             return True
+        return False
+
+    def horizontalWin(self, yCor, xCor, piece):
+        matches = 0
+        for i in range(xCor, self.width): # horizontal matches right
+            if self.content[yCor][i] == piece:
+                matches += 1
+        if matches == 4:
+            return True
+
+        matches = 0
+        for i in range(0, (xCor + 1)): # horizontal matches left
+            if self.content[yCor][i] == piece:
+                matches += 1
+        if matches == 4:
+            return True
+        return False
+
+    def diagonalWin(self, yCor, xCor, piece):
+        matches = 0
+
+        # matches to the top left
+        for i in range(0, (yCor + 1)):
+            for j in range(0, (xCor + 1)):
+                if self.content[i][j] == piece:
+                    matches += 1
+        if matches == 4:
+            return True
+
+        matches = 0
+        # matches to the top right
+        for i in range(0, (yCor + 1)):
+            for j in range(xCor, self.width):
+                if self.content[i][j] == piece:
+                    matches += 1
+        if matches == 4:
+            return True
+        
+        matches = 0
+        # matches to the bottom left
+        for i in range(yCor, self.height):
+            for j in range(0, (xCor + 1)):
+                if self.content[i][j] == piece:
+                    matches += 1
+        if matches == 4:
+            return True
+
+        matches = 0
+        # matches to the bottom right
+        for i in range(yCor, self.height):
+            for j in range(xCor, self.width):
+                if self.content[i][j] == piece:
+                    matches += 1
+        if matches == 4:
+            return True
+
         return False
 
     def isWon(self, piece):
@@ -36,7 +92,11 @@ class Board:
             for j in range(self.width - 3):
                 value = self.content[i][j]
                 if value == piece: # a spot is occupied
-                    win = True
+                    vert = self.verticalWin(i, j, piece)
+                    hori = self.horizontalWin(i, j, piece)
+                    diag = self.diagonalWin(i, j, piece)
+                    if vert or hori or diag:
+                        return True
         return False
 
     def isTerminal(self):
