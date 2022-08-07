@@ -16,7 +16,19 @@ class Board:
         self.oppPiece = opp
 
     def verticalWin(self, yCor, xCor, piece):
-        check = self.content[yCor][xCor]
+        matches = 0
+        for i in range(yCor, self.height): # vertical matches above
+            if self.content[i][xCor] == piece:
+                matches += 1
+        if matches == 4:
+            return True
+
+        matches = 0
+        for i in range(0, (yCor + 1)):
+            if self.content[i][xCor] == piece:
+                matches += 1
+        if matches == 4:
+            return True
         return False
 
     def isWon(self, piece):
