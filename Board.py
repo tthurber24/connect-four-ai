@@ -88,8 +88,8 @@ class Board:
         return False
 
     def isWon(self, piece):
-        for i in range(self.height - 3):
-            for j in range(self.width - 3):
+        for i in range(self.height):
+            for j in range(self.width):
                 value = self.content[i][j]
                 if value == piece: # a spot is occupied
                     vert = self.verticalWin(i, j, piece)
@@ -158,3 +158,14 @@ class Board:
                 return True
         return False
        
+def main():
+    testB = Board()
+    testB.content[5][2] = -1
+    testB.content[4][3] = -1
+    testB.content[3][4] = -1
+    testB.content[2][5] = -1
+    testB.printBoard()
+    print(testB.isTerminal())
+
+if __name__ == "__main__":
+    main()

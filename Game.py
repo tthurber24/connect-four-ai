@@ -26,8 +26,7 @@ def test_moves(board):
 def main():
     b1 = Board()
     b1.setPieces('o', 'x')
-    # test_moves(b1)
-    print(b1.width)
+    test_moves(b1)
 
 if __name__ == "__main__":
     main()
