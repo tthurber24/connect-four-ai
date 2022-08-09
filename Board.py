@@ -20,6 +20,8 @@ class Board:
         for i in range(yCor, self.height): # vertical matches above
             if self.content[i][xCor] == piece:
                 matches += 1
+            else:
+                break
         if matches == 4:
             return True
 
@@ -27,6 +29,8 @@ class Board:
         for i in range(0, (yCor + 1)): # vertical matches below
             if self.content[i][xCor] == piece:
                 matches += 1
+            else:
+                break
         if matches == 4:
             return True
         return False
@@ -36,6 +40,8 @@ class Board:
         for i in range(xCor, self.width): # horizontal matches right
             if self.content[yCor][i] == piece:
                 matches += 1
+            else:
+                break
         if matches == 4:
             return True
 
@@ -43,6 +49,8 @@ class Board:
         for i in range(0, (xCor + 1)): # horizontal matches left
             if self.content[yCor][i] == piece:
                 matches += 1
+            else:
+                break
         if matches == 4:
             return True
         return False
@@ -51,37 +59,49 @@ class Board:
         matches = 0
 
         # matches to the top left
-        for i in range(0, (yCor + 1)):
-            for j in range(0, (xCor + 1)):
-                if self.content[i][j] == piece:
-                    matches += 1
+        for i in range(4):
+            yCheck = yCor - i
+            xCheck = xCor - i
+            if yCheck < 0 or xCheck < 0:
+                break
+            if self.content[yCheck][xCheck] == piece:
+                matches += 1
         if matches == 4:
             return True
 
         matches = 0
         # matches to the top right
-        for i in range(0, (yCor + 1)):
-            for j in range(xCor, self.width):
-                if self.content[i][j] == piece:
-                    matches += 1
+        for i in range(4):
+            yCheck = yCor - i
+            xCheck = xCor + i
+            if yCheck < 0 or xCheck >= self.width:
+                break
+            if self.content[yCheck][xCheck] == piece:
+                matches += 1
         if matches == 4:
             return True
         
         matches = 0
         # matches to the bottom left
-        for i in range(yCor, self.height):
-            for j in range(0, (xCor + 1)):
-                if self.content[i][j] == piece:
-                    matches += 1
+        for i in range(4):
+            yCheck = yCor + i
+            xCheck = xCor - i
+            if yCheck >= self.height or xCheck < 0:
+                break
+            if self.content[yCheck][xCheck] == piece:
+                matches += 1
         if matches == 4:
             return True
 
         matches = 0
         # matches to the bottom right
-        for i in range(yCor, self.height):
-            for j in range(xCor, self.width):
-                if self.content[i][j] == piece:
-                    matches += 1
+        for i in range(4):
+            yCheck = yCor + i
+            xCheck = xCor + i
+            if yCheck >= self.height or xCheck >= self.width:
+                break
+            if self.content[yCheck][xCheck] == piece:
+                matches += 1
         if matches == 4:
             return True
 
@@ -95,6 +115,9 @@ class Board:
                     vert = self.verticalWin(i, j, piece)
                     hori = self.horizontalWin(i, j, piece)
                     diag = self.diagonalWin(i, j, piece)
+                    print("Vert: " + str(vert))
+                    print("Hori: " + str(hori))
+                    print("Diag: " + str(diag))
                     if vert or hori or diag:
                         return True
         return False
@@ -107,7 +130,6 @@ class Board:
             self.utility = -1000
             return True
         else:
-            print("testing")
             self.userWinner = self.isWon(1)
             if not self.userWinner: # if the user did not win, then check if the opponent won
                 self.oppWinner = self.isWon(-1)
@@ -161,9 +183,9 @@ class Board:
 def main():
     testB = Board()
     testB.content[5][2] = -1
+    testB.content[5][3] = -1
+    testB.content[4][2] = -1
     testB.content[4][3] = -1
-    testB.content[3][4] = -1
-    testB.content[2][5] = -1
     testB.printBoard()
     print(testB.isTerminal())
 

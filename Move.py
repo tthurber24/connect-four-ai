@@ -24,7 +24,6 @@ class Move:
                 else:
                     break
 
-            print(rowIndex != -1)
             if rowIndex != -1: # a valid move is found
                 newBoard = boardState.copyBoard()
 

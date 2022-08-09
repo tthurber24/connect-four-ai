@@ -2,6 +2,11 @@ from Board import Board
 from Move import Move
 
 def test_moves(board):
+    userP = input("Which piece would like to use? (x or o)\n").lower
+    if userP == "o":
+        board.setPieces('o', 'x')
+    else:
+        board.setPieces('x', 'o')
     while True:
         board.printBoard()
         converted = False
@@ -12,7 +17,7 @@ def test_moves(board):
                 column = int(column)
                 userMove = Move(board.userTurn, column)
                 newBoard = userMove.makeMove(board)
-                userMove.printMove()
+                # userMove.printMove()
                 if newBoard == None:
                     continue
                 converted = True
@@ -20,12 +25,12 @@ def test_moves(board):
                 print("Invalid input, try again")
         if newBoard.isTerminal():
             print("User won: " + str(newBoard.userWinner))
-            print("Opp won " + str(newBoard.oppWinner))
+            print("Opp won: " + str(newBoard.oppWinner))
+            break
         board = newBoard
 
 def main():
     b1 = Board()
-    b1.setPieces('o', 'x')
     test_moves(b1)
 
 if __name__ == "__main__":
