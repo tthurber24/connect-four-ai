@@ -115,9 +115,9 @@ class Board:
                     vert = self.verticalWin(i, j, piece)
                     hori = self.horizontalWin(i, j, piece)
                     diag = self.diagonalWin(i, j, piece)
-                    print("Vert: " + str(vert))
-                    print("Hori: " + str(hori))
-                    print("Diag: " + str(diag))
+                    # print("Vert: " + str(vert))
+                    # print("Hori: " + str(hori))
+                    # print("Diag: " + str(diag))
                     if vert or hori or diag:
                         return True
         return False
