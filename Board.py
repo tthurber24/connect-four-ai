@@ -137,6 +137,20 @@ class Board:
                     return False
             return True
 
+    def getUtility(self):
+        if self.isTerminal():
+            if self.userWinner:
+                return -100
+            elif self.oppWinner:
+                return 100
+            else:
+                return 0
+        else:
+            return None
+
+    def heuristic(self):
+        return
+
     def printBoard(self):
         for i in range(1,8):
             print(i, end=" ")
