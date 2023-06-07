@@ -43,9 +43,9 @@ class Board:
     def getUtility(self):
         if self.isTerminal():
             if self.userWinner:
-                return -100
+                return -1000
             elif self.oppWinner:
-                return 100
+                return 1000
             else:
                 return 0
         else:
@@ -61,7 +61,7 @@ class Board:
             fours += 1
         return twos, threes, fours
 
-
+    # returns a tuple with the number of vertical pairs, 3s-in-a-row, and 4s-in-a-row
     def vertMatch(self, piece):
         twos, threes, fours = 0, 0, 0
 
@@ -78,6 +78,7 @@ class Board:
             twos, threes, fours = self.updateMatches((twos, threes, fours), matches)
         return (twos, threes, fours)
 
+    # returns a tuple with the number of horizontal pairs, 3s-in-a-row, and 4s-in-a-row
     def horiMatch(self, piece):
         twos, threes, fours = 0, 0, 0
 
@@ -122,9 +123,9 @@ class Board:
                 xCor += 1
             
         twos, threes, fours = self.updateMatches((twos, threes, fours), matches)
-
         return twos, threes, fours
 
+    # returns a tuple with the number of diagonal pairs, 3s-in-a-row, and 4s-in-a-row
     def diagMatch(self, piece):
         twos, threes, fours = 0, 0, 0
 
@@ -159,7 +160,7 @@ class Board:
         twos = vMatchCount[0] + hMatchCount[0] + dMatchCount[0]
         threes = vMatchCount[1] + hMatchCount[1] + dMatchCount[1]
 
-        score = (twos*3) + (threes*10)
+        score = (twos*5) + (threes*20)
         return score
 
     def printBoard(self):
