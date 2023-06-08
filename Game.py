@@ -25,9 +25,9 @@ def multiplayer(board):
     while True: # gameplay loop
         board.printBoard()
         if board.isTerminal():
-            if board.userWinner:
+            if board.winnerP1:
                 print("Player 1 wins!")
-            elif board.oppWinner:
+            elif board.winnerP2:
                 print("Player 2 wins!")
             else:
                 print("There was a tie!")
@@ -35,14 +35,14 @@ def multiplayer(board):
         converted = False
         newBoard = None
         while not converted:
-            if board.userTurn:
+            if board.turnP1:
                 print("Player 1's turn:")
             else:
                 print("Player 2's turn:")
             column = input("Where would you like to place a piece?\n")
             try:
                 column = int(column)
-                userMove = Move(board.userTurn, column)
+                userMove = Move(board.turnP1, column)
                 newBoard = userMove.makeMove(board)
                 if newBoard == None:
                     continue

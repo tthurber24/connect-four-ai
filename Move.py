@@ -1,8 +1,8 @@
 from Board import Board
 
 class Move:
-    def __init__(self, userTurn, col):
-        self.userTurn = userTurn
+    def __init__(self, turnP1, col):
+        self.turnP1 = turnP1
         self.placement = col
         self.valid = False
 
@@ -14,7 +14,7 @@ class Move:
         return self.valid
 
     def makeMove(self, boardState):
-        if self.isValid() and self.userTurn == boardState.userTurn:
+        if self.isValid() and self.turnP1 == boardState.turnP1:
             colIndex = self.placement - 1
             rowIndex = -1
 
@@ -27,11 +27,11 @@ class Move:
             if rowIndex != -1: # a valid move is found
                 newBoard = boardState.copyBoard()
 
-                if self.userTurn:
+                if self.turnP1:
                     newBoard.content[rowIndex][colIndex] = 1
                 else:
                     newBoard.content[rowIndex][colIndex] = -1
-                newBoard.userTurn = not boardState.userTurn # since a move was made, turns switch
+                newBoard.turnP1 = not boardState.turnP1 # since a move was made, turns switch
                 newBoard.parentMove = self.placement
                 return newBoard
             else:
@@ -43,4 +43,4 @@ class Move:
             return None
 
     def printMove(self):
-        print("Move --> Column: {}, userTurn: {}, isValid: {}".format(self.placement, self.userTurn, self.valid))
+        print("Move --> Column: {}, turnP1: {}, isValid: {}".format(self.placement, self.turnP1, self.valid))

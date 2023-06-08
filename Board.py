@@ -3,17 +3,17 @@ class Board:
 
     def __init__(self):
         self.content = [[0 for i in range(self.width)] for j in range(self.height)]
-        self.userWinner = False
-        self.oppWinner = False
-        self.userTurn = True
-        self.userPiece = 'x'
-        self.oppPiece = 'o'
+        self.winnerP1 = False
+        self.winnerP2 = False
+        self.turnP1 = True
+        self.piece1 = 'x'
+        self.piece2 = 'o'
         self.parentMove = None
         self.utility = 0
 
     def setPieces(self, user, opp):
-        self.userPiece = user
-        self.oppPiece = opp
+        self.piece1 = user
+        self.piece2 = opp
 
     def isWon(self, piece):
         vMatchCount = self.vertMatch(piece)
@@ -26,25 +26,25 @@ class Board:
         return False
 
     def isTerminal(self):
-        if self.userWinner == True:
-            self.utility = 100
+        if self.winnerP1 == True:
+            self.utility = 1000
             return True
-        elif self.oppWinner == True:
-            self.utility = -100
+        elif self.winnerP2 == True:
+            self.utility = -1000
             return True
         else:
-            self.userWinner = self.isWon(1)
-            if not self.userWinner: # if the user did not win, then check if the opponent won
-                self.oppWinner = self.isWon(-1)
-                if not self.oppWinner:
+            self.winnerP1 = self.isWon(1)
+            if not self.winnerP1: # if player 1 did not win, then check if the opponent won
+                self.winnerP2 = self.isWon(-1)
+                if not self.winnerP2:
                     return False
             return True
 
     def getUtility(self):
         if self.isTerminal():
-            if self.userWinner:
+            if self.winnerP1:
                 return -1000
-            elif self.oppWinner:
+            elif self.winnerP2:
                 return 1000
             else:
                 return 0
@@ -160,7 +160,7 @@ class Board:
         twos = vMatchCount[0] + hMatchCount[0] + dMatchCount[0]
         threes = vMatchCount[1] + hMatchCount[1] + dMatchCount[1]
 
-        score = (twos*5) + (threes*20)
+        score = (twos*3) + (threes*10)
         return score
 
     def printBoard(self):
@@ -174,9 +174,9 @@ class Board:
         for row in self.content:
             for val in row:
                 if val == 1:
-                    print(self.userPiece, end=" ")
+                    print(self.piece1, end=" ")
                 elif val == -1:
-                    print(self.oppPiece, end=" ")
+                    print(self.piece2, end=" ")
                 else:
                     print('-', end=" ")
             print("")
@@ -187,11 +187,11 @@ class Board:
         for i in range(self.height):
             for j in range(self.width):
                 boardState.content[i][j] = self.content[i][j]
-        boardState.userWinner = self.userWinner
-        boardState.oppWinner = self.oppWinner
-        boardState.userTurn = self.userTurn
-        boardState.userPiece = self.userPiece
-        boardState.oppPiece = self.oppPiece
+        boardState.winnerP1 = self.winnerP1
+        boardState.winnerP2 = self.winnerP2
+        boardState.turnP1 = self.turnP1
+        boardState.piece1 = self.piece1
+        boardState.piece2 = self.piece2
         boardState.parentMove = self.parentMove
         return boardState
 
