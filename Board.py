@@ -25,27 +25,36 @@ class Board:
             return True
         return False
 
+    def isFull(self):
+        for yCor in range(self.height):
+            for xCor in range(self.width):
+                if self.content[yCor][xCor] == 0:
+                    return False
+        return True
+
     def isTerminal(self):
         if self.winnerP1 == True:
-            self.utility = 1000
+            self.utility = -100
             return True
         elif self.winnerP2 == True:
-            self.utility = -1000
+            self.utility = 100
             return True
         else:
             self.winnerP1 = self.isWon(1)
             if not self.winnerP1: # if player 1 did not win, then check if the opponent won
                 self.winnerP2 = self.isWon(-1)
-                if not self.winnerP2:
+                if not self.winnerP2: # if player 2 did not win
+                    if self.isFull():
+                        return True
                     return False
             return True
-
+        
     def getUtility(self):
         if self.isTerminal():
             if self.winnerP1:
-                return -1000
+                return -100
             elif self.winnerP2:
-                return 1000
+                return 100
             else:
                 return 0
         else:
@@ -199,8 +208,7 @@ class Board:
         for row in self.content:
             print(row)
 
-    def openColumn(self, col):
-        colIndex = col - 1
+    def openColumn(self, colIndex):
         if colIndex >= 0 and colIndex < self.width:
             if self.content[0][colIndex] == 0: # if the top spot in a column is open
                 return True
