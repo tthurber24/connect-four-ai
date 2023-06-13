@@ -64,12 +64,13 @@ def minimax(board, depth, isMax):
     else:
         val = 0
         bestColIndex = -1
+
         if isMax:
             val = -1000
         else:
             val = 1000
         openCols = getOpenCols(board)
-        for colIndex in openCols:
+        for colIndex in openCols: # for each possible move, check the child and run minimax on it
             childMove = Move(board.turnP1, (colIndex + 1))
             childBoard = childMove.makeMove(board)
             if childBoard == None:
@@ -78,7 +79,7 @@ def minimax(board, depth, isMax):
             
             if isMax:
                 check = minimax(childBoard, (depth - 1), False)
-                if check[0] > val: # if the current child produces a better result
+                if check[0] > val: # if the current child produces a better result, update best column and utility
                     bestColIndex = colIndex
                     val = check[0]
             else: # if minimizing
@@ -107,6 +108,7 @@ def singleplayer(board):
             print("Invalid input, try again.")
 
         while True: # gameplay loop
+            print()
             board.printBoard()
             if board.isTerminal():
                 if board.winnerP1:
@@ -132,17 +134,23 @@ def singleplayer(board):
                     except:
                         print("Invalid input, try again")
                 else:
-                    cpuMove = minimax(board, 5, True)
-                    index = cpuMove[1]
+                    print("Player 2's turn:")
+                    cpuMinimax = minimax(board, 4, True)
+                    index = cpuMinimax[1]
+                    print("The computer places a piece in column " + str(index+1) + "!")
+                    # print("Heuristic result:", cpuMinimax[0])
 
-                    
-                    print("The computer places a piece in column ", (index+1), "!")
-
+                    cpuMove = Move(board.turnP1, (index+1))
+                    newBoard = cpuMove.makeMove(board)
+                    if newBoard == None:
+                        print("Error making minimax-computed move")
+                        continue
+                    converted = True
             board = newBoard
 
 def main():
     b1 = Board()
-    multiplayer(b1)
+    singleplayer(b1)
 
 if __name__ == "__main__":
     main()

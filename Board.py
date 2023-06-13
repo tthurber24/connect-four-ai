@@ -162,10 +162,6 @@ class Board:
         hMatchCount = self.horiMatch(-1)
         dMatchCount = self.diagMatch(-1)
 
-        print(vMatchCount)
-        print(hMatchCount)
-        print(dMatchCount)
-
         twos = vMatchCount[0] + hMatchCount[0] + dMatchCount[0]
         threes = vMatchCount[1] + hMatchCount[1] + dMatchCount[1]
 
