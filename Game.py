@@ -136,6 +136,8 @@ def singleplayer(board):
                 else:
                     print("Player 2's turn:")
                     cpuMinimax = minimax(board, 4, True)
+                    if cpuMinimax == None:
+                        return
                     index = cpuMinimax[1]
                     print("The computer places a piece in column " + str(index+1) + "!")
                     # print("Heuristic result:", cpuMinimax[0])
@@ -148,9 +150,105 @@ def singleplayer(board):
                     converted = True
             board = newBoard
 
+def inputMove(board):
+    converted = False
+    newBoard = None
+    while not converted:
+        column = input("Where would you like to place a piece?\n")
+        try:
+            column = int(column)
+            userMove = Move(board.turnP1, column)
+            newBoard = userMove.makeMove(board)
+            if newBoard == None:
+                print("Error making move, please try again.")
+                continue
+            converted = True
+        except:
+            print("Invalid input, try again")
+    return newBoard
+
+def minimaxMove(board):
+    success = False
+    while not success:
+        cpuMinimax = minimax(board, 4, True)
+        if cpuMinimax == None:
+            print("Error computing minimax.")
+            continue
+        index = cpuMinimax[1]
+        print("The computer places a piece in column " + str(index+1) + "!")
+
+        cpuMove = Move(board.turnP1, (index+1))
+        newBoard = cpuMove.makeMove(board)
+        if newBoard == None:
+            print("Error making minimax-computed move")
+            continue
+        success = True
+    return newBoard
+
+def gameloop(board, players):
+    while True: # gameplay loop
+        print()
+        board.printBoard()
+        if board.isTerminal():
+            if board.winnerP1:
+                print("Player 1 wins!")
+            elif board.winnerP2:
+                print("Player 2 wins!")
+            else:
+                print("There was a tie!")
+            break
+        
+        if board.turnP1:
+            print("Player 1's turn:")
+            board = inputMove(board)
+        else:
+            print("Player 2's turn:")
+            if players == 2: # if multiplayer
+                board = inputMove(board)
+            else: # if singleplayer
+                board = minimaxMove(board)
+
+def gameplay(board):
+    print("Welcome to Connect 4!")
+
+    # Selecting the game mode
+    players = 1
+    playerSelect = False
+    while not playerSelect:
+        players = input("Enter 1 for single player or 2 for multiplayer:\n")
+        try:
+            players = int(players)
+            if players == 1 or players == 2:
+                playerSelect = True
+            else: # inputed a number other than 1 or 2
+                print("Please enter either 1 or 2.")
+        except: # did not input a number
+            print("Invalid input, please try again.")
+
+    # Selecting the game pieces
+    validSelect = False
+    while not validSelect:
+        userP = input("Would you (Player 1) like to be x or o?\n")
+        try:
+            userP = str(userP).lower()
+            if userP == "o":
+                board.setPieces('o', 'x')
+                validSelect = True
+                print("Player 2 will be 'x'")
+            elif userP == "x":
+                board.setPieces('x', 'o')
+                validSelect = True
+                print("PLayer 2 will be 'o'")
+            else: # inputed a string but it wasn't x or o
+                print("Please input either x or o")
+        except:
+            print("Invalid input, try again.")
+
+    gameloop(board, players)
+
 def main():
     b1 = Board()
-    singleplayer(b1)
+    gameplay(b1)
 
 if __name__ == "__main__":
     main()
