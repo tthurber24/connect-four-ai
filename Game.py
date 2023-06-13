@@ -1,56 +1,6 @@
 from Board import Board
 from Move import Move
 
-def test_moves(board):
-    print("test")
-
-def multiplayer(board):
-    validSelect = False
-    while not validSelect:
-        userP = input("Would you like to be x or o?\n")
-        try:
-            userP = str(userP).lower()
-            if userP == "o":
-                board.setPieces('o', 'x')
-                validSelect = True
-            elif userP == "x":
-                board.setPieces('x', 'o')
-                validSelect = True
-            else: # inputed a string but it wasn't x or o
-                print("Please input either x or o")
-                validSelect = False
-        except:
-            print("Invalid input, try again.")
-    
-    while True: # gameplay loop
-        board.printBoard()
-        if board.isTerminal():
-            if board.winnerP1:
-                print("Player 1 wins!")
-            elif board.winnerP2:
-                print("Player 2 wins!")
-            else:
-                print("There was a tie!")
-            break
-        converted = False
-        newBoard = None
-        while not converted:
-            if board.turnP1:
-                print("Player 1's turn:")
-            else:
-                print("Player 2's turn:")
-            column = input("Where would you like to place a piece?\n")
-            try:
-                column = int(column)
-                userMove = Move(board.turnP1, column)
-                newBoard = userMove.makeMove(board)
-                if newBoard == None:
-                    continue
-                converted = True
-            except:
-                print("Invalid input, try again")
-        board = newBoard
-
 def getOpenCols(board):
     cols = []
     for i in range(board.width):
@@ -89,67 +39,7 @@ def minimax(board, depth, isMax):
                     val = check[0]
         return (val, bestColIndex)
 
-def singleplayer(board):
-    validSelect = False
-    while not validSelect:
-        userP = input("Would you like to be x or o?\n")
-        try:
-            userP = str(userP).lower()
-            if userP == "o":
-                board.setPieces('o', 'x')
-                validSelect = True
-            elif userP == "x":
-                board.setPieces('x', 'o')
-                validSelect = True
-            else: # inputed a string but it wasn't x or o
-                print("Please input either x or o")
-                validSelect = False
-        except:
-            print("Invalid input, try again.")
-
-        while True: # gameplay loop
-            print()
-            board.printBoard()
-            if board.isTerminal():
-                if board.winnerP1:
-                    print("Player 1 wins!")
-                elif board.winnerP2:
-                    print("Player 2 wins!")
-                else:
-                    print("There was a tie!")
-                break
-            converted = False
-            newBoard = None
-            while not converted:
-                if board.turnP1:
-                    print("Player 1's turn:")
-                    column = input("Where would you like to place a piece?\n")
-                    try:
-                        column = int(column)
-                        userMove = Move(board.turnP1, column)
-                        newBoard = userMove.makeMove(board)
-                        if newBoard == None:
-                            continue
-                        converted = True
-                    except:
-                        print("Invalid input, try again")
-                else:
-                    print("Player 2's turn:")
-                    cpuMinimax = minimax(board, 4, True)
-                    if cpuMinimax == None:
-                        return
-                    index = cpuMinimax[1]
-                    print("The computer places a piece in column " + str(index+1) + "!")
-                    # print("Heuristic result:", cpuMinimax[0])
-
-                    cpuMove = Move(board.turnP1, (index+1))
-                    newBoard = cpuMove.makeMove(board)
-                    if newBoard == None:
-                        print("Error making minimax-computed move")
-                        continue
-                    converted = True
-            board = newBoard
-
+# returns a new board by executing a move specified by user input
 def inputMove(board):
     converted = False
     newBoard = None
@@ -167,6 +57,7 @@ def inputMove(board):
             print("Invalid input, try again")
     return newBoard
 
+# returns a new board by executing the move calculated by the minimax algorithm to depth 4
 def minimaxMove(board):
     success = False
     while not success:
@@ -186,7 +77,7 @@ def minimaxMove(board):
     return newBoard
 
 def gameloop(board, players):
-    while True: # gameplay loop
+    while True:
         print()
         board.printBoard()
         if board.isTerminal():
